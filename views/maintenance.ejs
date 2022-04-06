@@ -1,0 +1,28 @@
+<div class="my_box">
+    <table class="bigTable">
+        <tr>
+            <th>Date</th>
+            <th>Log</th>
+            <th></th>
+        </tr>
+        <% logs.forEach(log => { %>
+        <tr>
+            <td><%= log.createdAt %></td>
+            <td><%= log.description %></td>
+            <td><form method="POST"><button type="submit">Delete?</button></form></td>
+        </tr>
+        <%})%>
+    </table>
+</div>
+
+<hr>
+
+<div class="my_box">
+    <form action="/maintenance" method="POST" class="newKioskForm">
+        <label for="newKiosk">Add Log for <%-address%></label><br>
+        <textarea name="newLog"></textarea><br>
+        <input type="hidden" id="kioskId" name="id" value="<%=id%>">
+        <input type="hidden" id="kioskAddress" name="adr" value="<%=address%>">
+        <input type="submit" value="Submit">
+    </form>
+</div>

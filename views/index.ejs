@@ -10,9 +10,17 @@
 
 <div class="my_box">
     <table class="bigTable">
-        <tr><th>Address</th></tr>
+        <tr>
+            <th>Address</th>
+            <th></th>
+            <th></th>
+        </tr>
         <% kiosks.forEach(kiosk => { %>
-        <tr><td><a href="/"><%= kiosk.address %></a></td></tr>
+        <tr>
+            <td><h3><%= kiosk.address %></h3></td>
+            <td><form method="POST" action="/<%= kiosk.id %>?_method=DELETE"><button type="submit">Delete?</button></form></td>
+            <td><form method="GET" action="/maintenance/<%= kiosk.id %>"><button type="submit">View</button></form></td>
+        </tr>
         <%})%>
     </table>
 </div>
