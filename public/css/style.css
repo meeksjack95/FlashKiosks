@@ -1,11 +1,36 @@
 .header {
-    background-color: #f1f1f1;
-    padding: 20px;
-    text-align: center;
-  }
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+}
 
 .footer {
-    background-color: #f1f1f1;
-    padding: 10px;
-    text-align: center;
-  }
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+}
+
+.newKioskForm {
+  text-align: center;
+}
+
+.bigTable{
+    margin: auto;
+    width: 90%;
+    padding: 10px;  
+}
+
+.bg{
+  background-color: #f19b89;
+}
+
+.my_box{
+  border-style: solid;
+  border-color: black;
+  border-radius: 25px;
+  background-color: white;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}

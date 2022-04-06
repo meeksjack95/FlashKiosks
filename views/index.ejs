@@ -1,1 +1,28 @@
-Middle
+<div class="my_box">
+    <form action="/" method="GET" class="newKioskForm">
+        <label for="newKiosk">Search Kiosk:</label><br>
+        <input type="text" id="address" name="address" value="<%= searchOptions.address %>"><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<hr>
+
+<div class="my_box">
+    <table class="bigTable">
+        <tr><th>Address</th></tr>
+        <% kiosks.forEach(kiosk => { %>
+        <tr><td><a href="/"><%= kiosk.address %></a></td></tr>
+        <%})%>
+    </table>
+</div>
+
+<hr>
+
+<div class="my_box">
+    <form action="/" method="POST" class="newKioskForm">
+        <label for="newKiosk">Add Kiosk:</label><br>
+        <input type="text" id="newKiosk" name="newKiosk"><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
