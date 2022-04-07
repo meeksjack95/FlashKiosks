@@ -9,7 +9,7 @@
         <tr>
             <td><%= log.createdAt %></td>
             <td><%= log.description %></td>
-            <td><form method="POST"><button type="submit">Delete?</button></form></td>
+            <td><form method="POST" action="/maintenance/<%= log.id %>?_method=DELETE"><button type="submit">Delete?</button></form></td>
         </tr>
         <%})%>
     </table>

@@ -8,7 +8,7 @@ const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require("body-parser");
 const methodOverride = require('method-override')
 
-const Log = require("./models/log")
+const Log = require('./models/log')
 const Kiosk = require('./models/kiosk')
 
 
@@ -22,7 +22,8 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const kiosk = require('./models/kiosk');
 mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true
 })
@@ -44,7 +45,6 @@ app.get('/', async (req, res) => {
     } catch {
         res.render('Error')
     }
-    
 })
 
 app.post('/', (req, res) => {
@@ -52,7 +52,7 @@ app.post('/', (req, res) => {
         address: req.body.newKiosk
     })
 
-    console.log(kiosk.address)
+    //console.log(kiosk.address)
     kiosk.save((err, newKiosk) => {
         if(err){
             res.render('error')
@@ -66,38 +66,48 @@ app.post('/', (req, res) => {
 })
 
 app.get("/maintenance/:id", async (req, res) => {
-    let kiosk
-    let logs
+    let searchOptions = {}
+    if(req.query.address != null && req.query.name !== ''){
+        searchOptions.address = new RegExp(req.query.address, 'i')
+    }
     try{
-        kiosk = await Kiosk.findById(req.params.id)
-        console.log("looking for " + req.params.id + " : " + kiosk.address)
-        logs = await Log.find({}, {projection : {address: kiosk.address}})
-        console.log(logs[0].address)
-        res.render("maintenance", {id: req.params.id, address: kiosk.address, logs: logs})
+        const kiosk = await Kiosk.findById(req.params.id)
+        const logs = await Log.find({"address":kiosk.address})
+        res.render('maintenance', {
+            id: req.params.id,
+            address: kiosk.address,
+            logs : logs,
+            searchOptions: req.query
+        })
+    } catch {
+        res.render('Error')
+    }
+})
+
+app.delete("/maintenance/:id", async (req, res) => {
+    //console.log(req.params.id)
+    let log
+    try{
+        log = await Log.findById(req.params.id)
+        //console.log(kiosk.address)
+        await log.remove()
+        res.redirect('back')
     } catch{
-        if(kiosk == null){
+        if(log == null){
             res.render('error')
         }else{
-            res.redirect('/')
+            res.redirect('/maintenance/')
         }
     }
 })
 
 app.post("/maintenance", async(req, res) => {
 
-    // const theLog = {
-    //     address: req.body.adr,
-    //     description: req.body.newLog,
-    //     createdAt: new Date() 
-    // }
-
     const log = new Log({
         address: req.body.adr,
         description: req.body.newLog,
         createdAt: new Date()
     })
-
-    console.log(log.address)
 
     log.save((err, newLog) => {
         if(err){
@@ -106,20 +116,14 @@ app.post("/maintenance", async(req, res) => {
             res.redirect('/maintenance/' + req.body.id)
         }
     })
-    // try{
-    //     const newLog = await log.save();
-    //     res.redirect("maintenance/" + req.body.id)
-    // }catch{
-    //     res.render("error")
-    // }
 })
 
 app.delete('/:id', async (req, res) => {
-    console.log(req.params.id)
+    console.log("root?")
     let kiosk
     try{
         kiosk = await Kiosk.findById(req.params.id)
-        console.log(kiosk.address)
+        //console.log(kiosk.address)
         await kiosk.remove()
         res.redirect('/')
     } catch{
